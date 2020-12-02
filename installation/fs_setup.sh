@@ -35,6 +35,3 @@ yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub 
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
-# exit
-
-arch-chroot /mnt

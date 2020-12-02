@@ -7,6 +7,12 @@
 # use graphs, what is the difference when you do this. run tests
 # arhitectural diagram
 
+# arch-chroot /mnt /bin/bash <<EOF
+# pacman -S i3 sddm grub
+# ...
+# mkinitcpio -p linux
+# EOF
+
 
 # enable print mode
 set -o xtrace
