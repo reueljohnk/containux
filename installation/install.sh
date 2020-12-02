@@ -7,15 +7,54 @@
 # use graphs, what is the difference when you do this. run tests
 # arhitectural diagram
 
+
+# enable print mode
+set -o xtrace
+
+#!/bin/bash
+
+# check for a stable internet connection
+NET_CON=$(ping -c 0 -q google.com >&/dev/null; echo $?)
+
+if [$NET_CON != -1]; then
+    echo "No internet connection... Exiting.."
+    exit
+fi
+
+# set the time
+echo "Setting timezone"
+timedatectl set-ntp true
+
+# read the parition table
+
+sfdisk /dev/vda < ./vda.sfdisk
+
+# format partitions
+
+mkfs.ext3 /dev/vda2
+mkswap /dev/vda0
+swapon /dev/vda0
+
+# mount filesystems
+
+mount /dev/vda1 /mnt
+
+# install necessary packages
+# TODO: Convert to csv file and read!
+
+yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vim firejail
+
+# generate the fstab file to boot
+
+genfstab -U /mnt >> /mnt/etc/fstab
+
+
 # arch-chroot /mnt /bin/bash <<EOF
 # pacman -S i3 sddm grub
 # ...
 # mkinitcpio -p linux
 # EOF
 
-
-# enable print mode
-set -o xtrace
 
 # set timezone
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
