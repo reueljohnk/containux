@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Check internet
-ping -c 3 www.archlinux.org
+# check for a stable internet connection
+ping -c 1 -q google.com >&/dev/null; echo $?
 
 # Set time
 echo "Setting timezone"
