@@ -8,6 +8,15 @@ while getopts ${optstring} arg; do
     n)
         echo "creating new container for $OPTARG!"
         ;;
+    a)
+        echo "allowing device for $OPTARG!"
+        ;;
+    d)
+        echo "deny a device for $OPTARG!"
+        ;;
+    l)
+        echo "list containers for $OPTARG!"
+        ;;
     :)
         echo "$0: Must supply an argument to -$OPTARG." >&2
         exit 1
