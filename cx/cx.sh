@@ -21,12 +21,12 @@ while getopts ${optstring} arg; do
     a)
         [ -z "$3" ] && echo "please enter device to allow" && exit 1
         # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
-	    tempvar="blacklist $3"
-	    tempvar1="~/.config/firejail/$OPTARG.profile"
-	    echo $tempvar
-	    echo "$OPTARG.profile"
-	    #sed -i /$tempvar/d ~/.config/firejail/$OPTARG.profile
-        sed -i /"blacklist \/home\/user\/Downloads"/d ~/.config/firejail/firefox.profile
+	tempvar="blacklist\ $3"
+	tempvar=$(echo $tempvar | sed 's/\//\\\//g')
+	tempvar1="/home/user/.config/firejail/$OPTARG.profile"
+	#sed -i /"blacklist\ \/home\/user\/Downloads"/d "/home/user/.config/firejail/firefox.profile"
+	echo $tempvar
+	sed -i /"$tempvar"/d $tempvar1
         echo "allowing $3 for $OPTARG!"
         ;;
     d)
