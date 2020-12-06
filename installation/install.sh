@@ -55,6 +55,7 @@ genfstab -U /mnt >> /mnt/etc/fstab
 # mkinitcpio -p linux
 # EOF
 
+#!!!! UNCOMMENT BEFORE EXECUTING!!!!!! arch-chroot /mnt << EOF
 
 # set timezone
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
@@ -97,4 +98,6 @@ grub-mkconfig -o /boot/grub/grub.cfg
 
 # unmount
 exit
+EOF
+
 reboot

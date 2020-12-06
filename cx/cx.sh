@@ -1,6 +1,6 @@
 #!/bin/bash
 
-optstring=":n:"
+optstring=":n:a:d:l"
 
 while getopts ${optstring} arg; do
   case ${arg} in
@@ -9,9 +9,9 @@ while getopts ${optstring} arg; do
         [ -z "$3" ] && echo "please enter name of container" && exit 1
 
         echo "creating new container for $OPTARG! named $3..."
-        touch "~/.config/firejail/$3.profile"
-        echo "include $3.local" >> "$3.profile"
-        echo "include globals.local" >> "$3.profile"
+        touch ~/.config/firejail/$3.profile
+        echo "include $3.local" >> ~/.config/firejail/$3.profile
+        echo "include globals.local" >> ~/.config/firejail/$3.profile
         echo "------------"
         echo "Successfully created container for $OPTARG, use the -l flag for"
 
@@ -21,10 +21,18 @@ while getopts ${optstring} arg; do
     a)
         [ -z "$3" ] && echo "please enter device to allow" && exit 1
         # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
-        sed -i "/blacklist $3/d" ~/.config/firejail/"$OPTARG".profile
+	    tempvar="blacklist $3"
+	    tempvar1="~/.config/firejail/$OPTARG.profile"
+	    echo $tempvar
+	    echo "$OPTARG.profile"
+	    #sed -i /$tempvar/d ~/.config/firejail/$OPTARG.profile
+        sed -i /"blacklist \/home\/user\/Downloads"/d ~/.config/firejail/firefox.profile
         echo "allowing $3 for $OPTARG!"
         ;;
     d)
+        [ -z "$3" ] && echo "please enter device to deny" && exit 1
+        # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
+        echo "blacklist $3" >> ~/.config/firejail/"$OPTARG".profile
         echo "deny a device for $OPTARG!"
         ;;
     l)
