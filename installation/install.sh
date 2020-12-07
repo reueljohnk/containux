@@ -44,8 +44,9 @@ swapon /dev/vda1
 mount /dev/vda2 /mnt
 
 # install necessary packages
-sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
-tr '\n' ' ' < packages_clean.txt | pacstrap /mnt
+#sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
+#tr '\n' ' ' < packages_clean.txt | pacstrap /mnt
+ yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vim firejail firefox
 
 # generate the fstab file to boot
 genfstab -U /mnt >> /mnt/etc/fstab
