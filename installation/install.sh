@@ -6,7 +6,7 @@
 # check for a stable internet connection
 NET_CON=$(ping -c 1 -q google.com >&/dev/null; echo $?)
 
-if [$NET_CON != 0]; then
+if [ $NET_CON != 0 ]; then
     echo "No internet connection... Exiting.."
     exit
 fi
@@ -45,13 +45,13 @@ mount /dev/vda1 /mnt
 
 # install necessary packages
 sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
-sudo pacstrap /mnt --needed - < packages_clean.txt 
+tr '\n' ' ' < packages_clean.txt | pacstrap /mnt
 
 # generate the fstab file to boot
 genfstab -U /mnt >> /mnt/etc/fstab
 
 #!!!! UNCOMMENT BEFORE EXECUTING!!!!!! 
-#arch-chroot /mnt << EOF
+arch-chroot /mnt << EOF
 
 # set timezone
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime
