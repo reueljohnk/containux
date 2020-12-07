@@ -40,22 +40,13 @@ swapon /dev/vda0
 mount /dev/vda1 /mnt
 
 # install necessary packages
-# TODO: Convert to csv file and read!
-
-yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vim firejail
+yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vi vim firejail
 
 # generate the fstab file to boot
-
 genfstab -U /mnt >> /mnt/etc/fstab
 
-
-# arch-chroot /mnt /bin/bash <<EOF
-# pacman -S i3 sddm grub
-# ...
-# mkinitcpio -p linux
-# EOF
-
-#!!!! UNCOMMENT BEFORE EXECUTING!!!!!! arch-chroot /mnt << EOF
+#!!!! UNCOMMENT BEFORE EXECUTING!!!!!! 
+#arch-chroot /mnt << EOF
 
 # set timezone
 ln -sf /usr/share/zoneinfo/Asia/Kolkata /etc/localtime

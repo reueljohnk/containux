@@ -7,36 +7,39 @@ while getopts ${optstring} arg; do
   case ${arg} in
 
     n)  
-        [ -z "$3" ] && echo "please enter name of container" && exit 1
+        [ -z "$3" ] && echo "Enter name of container" && exit 1
 
-        echo "creating new container for $OPTARG! named $3..."
-        touch $HOME/.config/firejail/$3.profile
-        echo "include $3.local" >> ~/.config/firejail/$3.profile
-        echo "include globals.local" >> ~/.config/firejail/$3.profile
+	CX_NAME=$3
+
+        echo "Creating a container for $OPTARG with name $CX_NAME..."
+
+        touch $HOME/.config/firejail/$CX_NAME.profile
+	    echo "include $CX_NAME.local" >> ~/.config/firejail/$CX_NAME.profile
+        echo "include globals.local" >> ~/.config/firejail/$CX_NAME.profile
         echo "------------"
-        echo "Successfully created container for $OPTARG, use the -l flag for"
 
-        #cp /etc/firejail/default.profile ~/.config/firejail
-        ## change first line
+        echo "Successfully created container for $OPTARG"
+
         ;;
     a)
         [ -z "$3" ] && echo "please enter device to allow" && exit 1
+	    CX_DEVICE=$3
         # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
-	tempvar="blacklist\ $3"
-	tempvar=$(echo $tempvar | sed 's/\//\\\//g')
-	tempvar1="$FJ_HOME/$OPTARG.profile"
-	echo $tempvar
-	sed -i /"$tempvar"/d $tempvar1
-        echo "allowing $3 for $OPTARG!"
+	    WL_DEVICE="blacklist\ $CX_DEVICE"
+	    WL_DEVICE=$(echo $WL_DEVICE | sed 's/\//\\\//g')
+	    CX_DEVICE_PATH="$FJ_HOME/$OPTARG.profile"
+	    sed -i /"$WL_DEVICE"/d $CX_DEVICE_PATH
+        echo "allowing $CX_DEVICE for $OPTARG!"
         ;;
     d)
-        [ -z "$3" ] && echo "please enter device to deny" && exit 1
+        [ -z "$3" ] && echo "Enter a device to deny for $OPTARG" && exit 1
         # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
-        echo "blacklist $3" >> ~/.config/firejail/"$OPTARG".profile
-        echo "deny a device for $OPTARG"
+	    CX_DEVICE=$3
+        echo "blacklist $CX_DEVICE" >> ~/.config/firejail/"$OPTARG".profile
+        echo "Denying access to $CX_DEVICE for $OPTARG"
         ;;
     l)
-        echo "listing containers all containers"
+        echo "Listing all containers"
 	    echo "-------"
 	    ls -1 $HOME/.config/firejail/ | sed -e 's/\..*$//'
         ;;
