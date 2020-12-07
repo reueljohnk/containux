@@ -4,9 +4,9 @@
 #set -o xtrace
 
 # check for a stable internet connection
-NET_CON=$(ping -c 0 -q google.com >&/dev/null; echo $?)
+NET_CON=$(ping -c 1 -q google.com >&/dev/null; echo $?)
 
-if [$NET_CON != -1]; then
+if [$NET_CON != 0]; then
     echo "No internet connection... Exiting.."
     exit
 fi
@@ -16,14 +16,28 @@ echo "Setting timezone"
 timedatectl set-ntp true
 
 # read the parition table
-
-sfdisk /dev/vda < ./vda.sfdisk
-
+sed -e 's/\s*\([\+0-9a-zA-Z]*\).*/\1/' << FDISK_CMDS  | fdisk /dev/vda
+n   #
+p   #
+    #
+    #
++1G #
+t   #
+82  #
+n   #
+p   #
+    #
+    #
+    #
+a   #
+    #
+w   #
+FDISK_CMDS
 # format partitions
 
-mkfs.ext3 /dev/vda2
-mkswap /dev/vda0
-swapon /dev/vda0
+mkfs.ext4 /dev/vda1
+mkswap /dev/vda1
+swapon /dev/vda1
 
 # mount filesystems
 
@@ -31,7 +45,7 @@ mount /dev/vda1 /mnt
 
 # install necessary packages
 sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
-yes "Y" sudo pacman -S --needed - < packages_clean.txt 
+sudo pacstrap /mnt --needed - < packages_clean.txt 
 
 # generate the fstab file to boot
 genfstab -U /mnt >> /mnt/etc/fstab
