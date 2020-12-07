@@ -35,13 +35,13 @@ w   #
 FDISK_CMDS
 # format partitions
 
-mkfs.ext4 /dev/vda1
+mkfs.ext4 /dev/vda2
 mkswap /dev/vda1
 swapon /dev/vda1
 
 # mount filesystems
 
-mount /dev/vda1 /mnt
+mount /dev/vda2 /mnt
 
 # install necessary packages
 sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
