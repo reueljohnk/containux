@@ -9,7 +9,7 @@ while getopts ${optstring} arg; do
     n)  
         [ -z "$3" ] && echo "Enter name of container" && exit 1
 
-	CX_NAME=$3
+	    CX_NAME=$3
 
         echo "Creating a container for $OPTARG with name $CX_NAME..."
 

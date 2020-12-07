@@ -44,7 +44,7 @@ systemctl enable gdm
 grub-install --target=i386-pc /dev/vda
 grub-mkconfig -o /boot/grub/grub.cfg
 
-sed '/^GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet apparmor=1 lsm=lockdown,yama,apparmor\"' /etc/default/grub
+sed -i '/^GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet apparmor=1 lsm=lockdown,yama,apparmor\"' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # unmount
