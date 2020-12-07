@@ -1,17 +1,7 @@
-# apparmor=1 lsm=lockdown,yama,apparmor
-# need to set kernel parameters with sudo ^
-# /etc/default/grub
-# run grub-mkconfig post that with sudo
-# illustrate the docker difference in overhead
-# pls dont use it more
-# use graphs, what is the difference when you do this. run tests
-# arhitectural diagram
-
-
-# enable print mode
-set -o xtrace
-
 #!/bin/bash
+
+#enable print mode
+#set -o xtrace
 
 # check for a stable internet connection
 NET_CON=$(ping -c 0 -q google.com >&/dev/null; echo $?)
@@ -40,7 +30,8 @@ swapon /dev/vda0
 mount /dev/vda1 /mnt
 
 # install necessary packages
-yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vi vim firejail
+sed 's/\s*#.*//g;/^[[:space:]]*$/d' packages.txt >> packages_clean.txt
+yes "Y" sudo pacman -S --needed - < packages_clean.txt 
 
 # generate the fstab file to boot
 genfstab -U /mnt >> /mnt/etc/fstab
@@ -70,21 +61,31 @@ echo "Enter a password for the root account"
 passwd
 
 ## Create user
-#echo "Enter username"
-#read username
-#useradd -m -G wheel $username
-#echo "Enter password for $username"
-#passwd $username
-#
-## give root access to  everyone part of the wheel group
+echo -n "Enter username : "
+read username
+useradd -m -G wheel $username
+echo "Enter a password for $username"
+passwd $username
+
+# Give full root access to user
+sed -i '/root ALL=(ALL) ALL/a \user ALL=(ALL) ALL' /etc/sudoers 
+
+# Give root access to everyone part of the wheel group
 #sed -i '/%wheel ALL=(ALL) ALL/s/#//g' /etc/sudoers
+
 
 #start services
 systemctl enable NetworkManager
 systemctl enable gdm
 
+
+# set variables
+
 # bootloader
 grub-install --target=i386-pc /dev/vda
+grub-mkconfig -o /boot/grub/grub.cfg
+
+sed '/^GRUB_CMDLINE_LINUX_DEFAULT.*/c\GRUB_CMDLINE_LINUX_DEFAULT=\"loglevel=3 quiet apparmor=1 lsm=lockdown,yama,apparmor\"' /etc/default/grub
 grub-mkconfig -o /boot/grub/grub.cfg
 
 # unmount
