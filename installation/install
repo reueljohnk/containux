@@ -51,6 +51,6 @@ mount /dev/vda2 /mnt
 # generate the fstab file to boot
 genfstab -U /mnt >> /mnt/etc/fstab
 
-cp install2.sh /mnt
+cp install2 /mnt
 
-arch-chroot /mnt ./install2.sh
+arch-chroot /mnt ./install2
