@@ -52,5 +52,6 @@ mount /dev/vda2 /mnt
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cp install2 /mnt
+cp  ../cx/cx /mnt/usr/local/bin/
 
 arch-chroot /mnt ./install2
