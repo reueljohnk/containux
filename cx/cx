@@ -3,7 +3,7 @@
 optstring=":n:a:d:l"
 FJ_HOME="$HOME/.config/firejail/"
 AA_HOME="/etc/apparmor.d/"
-
+Usage (Optional)
 while getopts ${optstring} arg; do
 
   CX_PROFILE_PATH="$FJ_HOME/$OPTARG.profile"
@@ -14,7 +14,7 @@ while getopts ${optstring} arg; do
 
     n)  
 
-        echo "Creating a container for $OPTARG with name $CX_NAME..."
+        echo "Creating a container for $OPTARG...."
 
         if [ $CX_EXT == "sh" ]; then
 
@@ -22,8 +22,6 @@ while getopts ${optstring} arg; do
         sudo aa-genprof $CX_NAME 
         
         else
-
-        [ -z "$3" ] && echo "Enter name of container" && exit 1
 
             touch $HOME/.config/firejail/$CX_NAME.profile
 	        echo "include $CX_NAME.local" >> ~/.config/firejail/$CX_NAME.profile
