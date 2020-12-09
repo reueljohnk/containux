@@ -6,6 +6,10 @@ AA_HOME="/etc/apparmor.d/"
 
 while getopts ${optstring} arg; do
 
+    if [ ! -d /home/$USER/.config/firejail ]; then
+        mkdir -p /home/$USER/.config/firejail
+    fi
+
   CX_PROFILE_PATH="$FJ_HOME/$OPTARG.profile"
   CX_NAME=$OPTARG
   CX_EXT=$(echo $CX_NAME | sed 's/.*\.//')

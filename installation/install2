@@ -24,7 +24,7 @@ passwd
 ## Create user
 echo -n "Enter username : "
 read username
-useradd -m -G wheel $username
+useradd -m -G wheel root $username
 echo "Enter a password for $username"
 passwd $username
 
