@@ -2,87 +2,148 @@
 
 optstring=":n:a:d:l"
 FJ_HOME="$HOME/.config/firejail/"
+AA_HOME="/etc/apparmor.d/"
 
 while getopts ${optstring} arg; do
+
   CX_PROFILE_PATH="$FJ_HOME/$OPTARG.profile"
+  CX_NAME=$OPTARG
+  CX_EXT=$(echo $CX_NAME | sed 's/.*\.//')
+
   case ${arg} in
 
     n)  
-        [ -z "$3" ] && echo "Enter name of container" && exit 1
-
-	    CX_NAME=$3
 
         echo "Creating a container for $OPTARG with name $CX_NAME..."
 
-        touch $HOME/.config/firejail/$CX_NAME.profile
-	    echo "include $CX_NAME.local" >> ~/.config/firejail/$CX_NAME.profile
-        echo "include globals.local" >> ~/.config/firejail/$CX_NAME.profile
-        echo "------------"
+        if [ $CX_EXT == "sh" ]; then
 
-        echo "Successfully created container for $OPTARG"
+	    #user input
+            sudo aa-genprof $CX_NAME 
+        
+        else
+
+        [ -z "$3" ] && echo "Enter name of container" && exit 1
+
+            touch $HOME/.config/firejail/$CX_NAME.profile
+	        echo "include $CX_NAME.local" >> ~/.config/firejail/$CX_NAME.profile
+            echo "include globals.local" >> ~/.config/firejail/$CX_NAME.profile
+
+        fi
+
+        echo " "
+
+        notify-send "Successfully created container for $OPTARG"
 
         ;;
     a)
         [ -z "$3" ] && echo "Must supply a device/path as additional argument to -a" && exit 1
 	    CX_DEVICE=$3
 
-        # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
-        if [ -d $CX_DEVICE ]; then
+        if [ $CX_EXT == "sh" ]; then
 
-	        WL_DEVICE="blacklist\ $CX_DEVICE"
-	        WL_DEVICE=$(echo $WL_DEVICE | sed 's/\//\\\//g')
-	        sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
-            echo " $OPTARG can now access $CX_DEVICE!"
+            CX_PROFILE_PATH=$(sudo readlink -f $OPTARG | sudo sed "s/\//\./g")
+            CX_PROFILE_PATH="${CX_PROFILE_PATH:1}"
+	    echo $CX_PROFILE_PATH
+            sudo sed -i "/include <abstractions\/base>/a \ $3 ix," $AA_HOME/$CX_PROFILE_PATH
+            sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
 
-        elif [ $CX_DEVICE == "webcam" ]; then
-            WL_DEVICE="novideo"
-	        sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
-            echo "$OPTARG can now access the webcam!"
-        elif [ $CX_DEVICE == "mic" ]; then
-            WL_DEVICE="nosound"
-	        sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
-            echo "$OPTARG can now access the mic!"
-        elif [ $CX_DEVICE == "net" ]; then
-            WL_DEVICE="net none"
-            echo $CX_PROFILE_PATH
-	        sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
-            echo "$OPTARG can now access the internet!"
+        else
+
+            if [ -d $CX_DEVICE ]; then
+
+	         WL_DEVICE="blacklist\ $CX_DEVICE"
+	         WL_DEVICE=$(echo $WL_DEVICE | sed 's/\//\\\//g')
+	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
+             notify-send " $OPTARG can now access $CX_DEVICE!"
+
+            elif [ $CX_DEVICE == "webcam" ]; then
+
+             WL_DEVICE="novideo"
+	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
+             notify-send "$OPTARG can now access the webcam!"
+
+            elif [ $CX_DEVICE == "mic" ]; then
+
+             WL_DEVICE="nosound"
+	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
+             notify-send "$OPTARG can now access the mic!"
+
+            elif [ $CX_DEVICE == "net" ]; then
+
+             WL_DEVICE="net none"
+             echo $CX_PROFILE_PATH
+	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
+             notify-send "$OPTARG can now access the internet!"
+
+            fi
         fi
         ;;
     d)
         [ -z "$3" ] && echo "Enter a device to deny for $OPTARG" && exit 1
-        # PERFORM CHECK TO SEE IF $3 and OPTARG is valid
 
 	    CX_DEVICE=$3
-        if [ -d $CX_DEVICE ]; then
 
-            echo "blacklist $CX_DEVICE" >> $CX_PROFILE_PATH
-            echo "$OPTARG has been denied access to $CX_DEVICE"
+        if [ $CX_EXT == "sh" ]; then
 
-        elif [ $CX_DEVICE == "webcam" ]; then
-                echo "novideo" >> $CX_PROFILE_PATH
-                echo "$OPTARG has been denied access to the webcam"
-        elif [ $CX_DEVICE == "mic" ]; then
-                echo "nosound" >> $CX_PROFILE_PATH
-                echo "$OPTARG has been denied access to the mic"
-        elif [ $CX_DEVICE == "net" ]; then
-                echo "net none" >> $CX_PROFILE_PATH
-                echo "$OPTARG has been denied access to the internet"
+        CX_PROFILE_PATH=$(sudo readlink -f $OPTARG | sudo sed "s/\//\./g")
+        CX_PROFILE_PATH="${CX_PROFILE_PATH:1}"
+
+	    WL_DEVICE=$(echo $CX_DEVICE | sed 's/\//\\\//g')
+	    sudo sed -i /" $WL_DEVICE ix,"/d $AA_HOME/$CX_PROFILE_PATH
+        sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
+        else
+
+            if [ -d $CX_DEVICE ]; then
+
+                echo "blacklist $CX_DEVICE" >> $CX_PROFILE_PATH
+                notify-send "$OPTARG has been denied access to $CX_DEVICE"
+
+            elif [ $CX_DEVICE == "webcam" ]; then
+
+                    echo "novideo" >> $CX_PROFILE_PATH
+                    notify-send "$OPTARG has been denied access to the webcam"
+
+            elif [ $CX_DEVICE == "mic" ]; then
+
+                    echo "nosound" >> $CX_PROFILE_PATH
+                    notify-send "$OPTARG has been denied access to the mic"
+
+            elif [ $CX_DEVICE == "net" ]; then
+
+                    echo "net none" >> $CX_PROFILE_PATH
+                    notify-send "$OPTARG has been denied access to the internet"
+
+            else 
+
+                    echo "Invalid device/path entered.."
+
+            fi
         fi
         ;;
+    g)
+
+        echo "global" 
+        ;;
     l)
+
         echo "Listing all containers"
 	    echo "-------"
 	    ls -1 $HOME/.config/firejail/ | sed -e 's/\..*$//'
+
         ;;
+    
     :)
+
         echo "$0: Must supply an argument to -$OPTARG." >&2
         exit 1
         ;;
+
     ?)
+
         echo "Invalid option: -${OPTARG}."
         exit 2
         ;;
-    sudo firecfg
   esac
+  sudo firecfg &> /dev/null
 done
