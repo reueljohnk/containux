@@ -46,13 +46,14 @@ mount /dev/vda2 /mnt
 
 # install necessary packages
 
-yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vim firejail firefox
+yes ""  | pacstrap /mnt base base-devel linux linux-headers linux-firmware grub networkmanager network-manager-applet wpa_supplicant dialog os-prober mtools dosfstools intel-ucode xf86-video-intel mesa xorg gnome-shell gnome-terminal gdm apparmor vim vi firejail firefox
 
 # generate the fstab file to boot
 
 genfstab -U /mnt >> /mnt/etc/fstab
 
 cp install2 /mnt
+touch /mnt/var/log/syslog
 cp  ../cx/cx /mnt/usr/local/bin/
 
 arch-chroot /mnt ./install2

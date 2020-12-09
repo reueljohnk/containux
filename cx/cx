@@ -76,7 +76,6 @@ while getopts ${optstring} arg; do
             elif [ $CX_DEVICE == "net" ]; then
 
              WL_DEVICE="net none"
-             echo $CX_PROFILE_PATH
 	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
              notify-send "$OPTARG can now access the internet!"
 
