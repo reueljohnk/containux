@@ -3,7 +3,7 @@
 optstring=":n:a:d:l"
 FJ_HOME="$HOME/.config/firejail/"
 AA_HOME="/etc/apparmor.d/"
-Usage (Optional)
+
 while getopts ${optstring} arg; do
 
   CX_PROFILE_PATH="$FJ_HOME/$OPTARG.profile"
@@ -86,12 +86,13 @@ while getopts ${optstring} arg; do
 
         if [ $CX_EXT == "sh" ]; then
 
-        CX_PROFILE_PATH=$(sudo readlink -f $OPTARG | sudo sed "s/\//\./g")
-        CX_PROFILE_PATH="${CX_PROFILE_PATH:1}"
+            CX_PROFILE_PATH=$(sudo readlink -f $OPTARG | sudo sed "s/\//\./g")
+            CX_PROFILE_PATH="${CX_PROFILE_PATH:1}"
 
-	    WL_DEVICE=$(echo $CX_DEVICE | sed 's/\//\\\//g')
-	    sudo sed -i /" $WL_DEVICE ix,"/d $AA_HOME/$CX_PROFILE_PATH
-        sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
+	        WL_DEVICE=$(echo $CX_DEVICE | sed 's/\//\\\//g')
+	        sudo sed -i /" $WL_DEVICE ix,"/d $AA_HOME/$CX_PROFILE_PATH
+            sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
+            notify-send "$OPTARG has been denied access to $CX_DEVICE"
 
         else
 
@@ -127,7 +128,6 @@ while getopts ${optstring} arg; do
         echo "Listing all containers"
 	    echo "-------"
 	    ls -1 $HOME/.config/firejail/ | sed -e 's/\..*$//'
-
         ;;
     
     :)
