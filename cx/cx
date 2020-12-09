@@ -18,8 +18,8 @@ while getopts ${optstring} arg; do
 
         if [ $CX_EXT == "sh" ]; then
 
-	    #user input
-            sudo aa-genprof $CX_NAME 
+	    # user input
+        sudo aa-genprof $CX_NAME 
         
         else
 
@@ -38,13 +38,14 @@ while getopts ${optstring} arg; do
         ;;
     a)
         [ -z "$3" ] && echo "Must supply a device/path as additional argument to -a" && exit 1
+
 	    CX_DEVICE=$3
 
         if [ $CX_EXT == "sh" ]; then
 
             CX_PROFILE_PATH=$(sudo readlink -f $OPTARG | sudo sed "s/\//\./g")
             CX_PROFILE_PATH="${CX_PROFILE_PATH:1}"
-	    echo $CX_PROFILE_PATH
+
             sudo sed -i "/include <abstractions\/base>/a \ $3 ix," $AA_HOME/$CX_PROFILE_PATH
             sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
 
@@ -54,6 +55,7 @@ while getopts ${optstring} arg; do
 
 	         WL_DEVICE="blacklist\ $CX_DEVICE"
 	         WL_DEVICE=$(echo $WL_DEVICE | sed 's/\//\\\//g')
+
 	         sed -i /"$WL_DEVICE"/d $CX_PROFILE_PATH
              notify-send " $OPTARG can now access $CX_DEVICE!"
 
@@ -92,6 +94,7 @@ while getopts ${optstring} arg; do
 	    WL_DEVICE=$(echo $CX_DEVICE | sed 's/\//\\\//g')
 	    sudo sed -i /" $WL_DEVICE ix,"/d $AA_HOME/$CX_PROFILE_PATH
         sudo apparmor_parser -r $AA_HOME/$CX_PROFILE_PATH
+
         else
 
             if [ -d $CX_DEVICE ]; then
@@ -120,10 +123,6 @@ while getopts ${optstring} arg; do
 
             fi
         fi
-        ;;
-    g)
-
-        echo "global" 
         ;;
     l)
 
