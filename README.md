@@ -40,8 +40,25 @@ For example, let us take the `ping` command. When a `ping` command is executed i
 By using firejail, containux can restrict the behaviour of various programs.
 
 
-## Methodology
+## Architecture and Methodoloy
 
+### Building the system
+
+Archlinux by default comes with a very minimal ISO. It is not a typical linux system in that it does not have any pre-installed applications by default. This gives the user flexibility to only install the packages that are needed and build a very customizeable system. The two install scripts in the `install/` directory do precisecely that. It does the following things
+
+* Sets an english locale
+* Configure the system clock
+* Partition the disk with `1GB swap` and and integrated `root` and `home` partition.
+* Set the appropriate boot flags and format partitions
+* Install base packages needed to boot the system including apparmor and firejail
+* Create an fstab file and configure hosts
+* Configure kernel modules and set environment variables to ensure AppArmor and Firejail run smoothly
+* Install and configure bootloader
+* Install the `cx` tool to `/usr/loca/bin`
+
+## CX tool
+
+To contain the different applications and create security policies, the CX tool achieves that. It interfaces with firejail and apparmor to create "containers" for given applications. Everytime a container is created with CX, it sets up an apparmor and firejail profile for the given application. By default, everything is in an "unrestricted mode" where the application behaves just as it did before it was being contained. Once a rule is created however, cx relays this to both firejail and apparmor after which the profiles are regenerated. The application is now run by default with the `firejail` prefix in the background to ensure that all profiles are loaded and in effect.
 
 
 ## Installation
@@ -135,7 +152,6 @@ To create a new container for a shell script:
 
 `cx -l`
 
-## Links
-[](https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html)
-[](https://gitlab.com/apparmor/apparmor/-/wikis/Documentation)
-
+## References
+https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html
+https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
