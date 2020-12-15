@@ -21,16 +21,6 @@ echo -e "127.0.0.1\tlocalhost\n::1\t\tlocalhost\n127.0.1.1\tarch.localdomain\t a
 echo "Enter a password for the root account"
 passwd
 
-## Create user
-echo -n "Enter username : "
-read username
-useradd -m -G wheel $username
-echo "Enter a password for $username"
-passwd $username
-
-# Give full root access to user
-sed -i '/root ALL=(ALL) ALL/a \user ALL=(ALL) ALL' /etc/sudoers 
-
 #start services
 systemctl enable NetworkManager
 systemctl enable gdm
