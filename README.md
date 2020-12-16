@@ -1,6 +1,6 @@
 # CONTAINUX
 
- > tip: Go to https://debayanlab.github.io/containux/ to view the github page. Images might not display depending on the permissions of the repo.
+ > tip: Go to https://debayanlab.github.io/containux/ to view the github page,however images might not display depending on the permissions of the repo.
 
 ## Description
 
