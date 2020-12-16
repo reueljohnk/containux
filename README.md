@@ -162,6 +162,7 @@ MIT
 ## References
 
 Linux Security Modules: General Security Support for the Linux Kernel
+
 Chris Wright and Crispin Cowan, WireX Communications, Inc.;James Morris, Intercode Pty Ltd;  Stephen Smalley, NAI Labs, Network Associates, Inc.; Greg Kroah-Hartman, IBM Linux Technology Center(https://www.usenix.org/legacy/event/sec02/full_papers/wright/wright.pdf)
 
 https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html
