@@ -18,16 +18,12 @@ The reason containerization is important for the purpose of this project however
 
 ## Linux Security Module (LSM)
   The linux security module is a framework created by the developers of the linux kernel which can be used by third party developers to create extensions which can take advantage of some features of the kernel. The way this works is that the LSM creates "hooks"  third party applications can use to  "hook into" different parts of the system. Referring to the paper by Greg K.H et. al, "LSM allows modules to mediate access to kernel objectsby placing hooksin the kernel code just ahead of the access ... Just before the kernel would have  accessed  an  internal  object, a hook makes a call to a function that the LSM module must provide.  The module can either let the access occur, or deny access,forcing an error code return"
+  
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook.png)
-	
-One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system.
-
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook2.png)
 
-One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. ![](https://github.com/debayanLab/containux/blob/main/assets/lsmnumbers.png) 
-
-This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.	
-	
+One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system.One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.	
+![](https://github.com/debayanLab/containux/blob/main/assets/lsmnumbers.png) 
 ## Tools used
 
 ### App Armor
