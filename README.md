@@ -2,7 +2,7 @@
 
 ## Description
 
-Containux is an Arch-based linux distribution built with user control and privacy in mind. In today's world users are constantly downloading and installing numerous applications from various sources on the internet.More often than not, the user does not verify the source or "trustedness" of the application before running it on their computer.
+Containux is an Arch-based linux distribution built with user control and privacy in mind. In today's world users are constantly downloading and installing numerous applications from various sources on the internet. More often than not, the user does not verify the source or "trustedness" of the application before running it on their computer.
 In doing so the user has no idea what information such applications can access and send over the internet.
 Applications with malicious behaviour can modify, delete or encrypt files thereby leaving the user at the mercy of the publisher.Moreover, non-malicious applications can at the same time snoop around a user's filesystem and network potentially collecting sensitive, personal and identifying information without consent.
 Unfortunately a large percentage of the applications the average person runs on a daily basis are closed-source (the source code is not open to the public) and hence has to simply take the publisher's word on issues of privacy and security.Containux is built with a solution to the aforementioned problem. It gets it's name from the merging(?) of the terms "container" and "linux". In short, containux provides the user appropriate tools to contain applications' behaviour. It can be used to restrict applications from accessing devices such as the microphone, webcam or even specific folders on the filesystem.
@@ -44,7 +44,7 @@ By using firejail, containux can restrict the behaviour of various programs.
 
 ### Building the system
 
-Archlinux by default comes with a very minimal ISO. It is not a typical linux system in that it does not have any pre-installed applications by default. This gives the user flexibility to only install the packages that are needed and build a very customizeable system. The two install scripts in the `install/` directory do precisecely that. It does the following things
+Archlinux by default comes with a very minimal ISO. It is not a typical linux system in that it does not have any pre-installed applications by default. This gives the user flexibility to only install the packages that are needed and build a very customizeable system. The two install scripts in the `install/` directory do precisely that. It does the following things
 
 * Sets an english locale
 * Configure the system clock
@@ -59,13 +59,14 @@ Archlinux by default comes with a very minimal ISO. It is not a typical linux sy
 ## CX tool
 
 To contain the different applications and create security policies, the CX tool achieves that. It interfaces with firejail and apparmor to create "containers" for given applications. Everytime a container is created with CX, it sets up an apparmor and firejail profile for the given application. By default, everything is in an "unrestricted mode" where the application behaves just as it did before it was being contained. Once a rule is created however, cx relays this to both firejail and apparmor after which the profiles are regenerated. The application is now run by default with the `firejail` prefix in the background to ensure that all profiles are loaded and in effect.
+![](https://github.com/debayanLab/containux/blob/main/assets/architecture.png)
 
 
 ## Installation
 
 ### Requirements
 
- Download the latest arch linux iso from [here](https:/https://www.archlinux.org/download//)
+ Download the latest arch linux iso from [here](https://www.archlinux.org/download//)
  
  Ensure that the machine you want to install containux on has at least 1GB of RAM and 20GB of disk space.
  
@@ -77,7 +78,7 @@ To contain the different applications and create security policies, the CX tool 
  
 ####  Windows/Mac 
 
-Burn the iso to a pendrive with a tool such as [rufus](https://https://rufus.ie/)
+Burn the iso to a pendrive with a tool such as [rufus](https://rufus.ie/)
 
 #### Linux
 
@@ -111,7 +112,7 @@ run the script
 
 `./install`
 
- >:memo: **You need to  have a stable internet connection to ensure a smooth installation of all packages**. You will also be prompted for a root password during installation which you will have to enter.
+ > note: **You need to  have a stable internet connection to ensure a smooth installation of all packages**. You will also be prompted for a root password during installation which you will have to enter.
 
 
 ### Finishing up
@@ -152,6 +153,10 @@ To create a new container for a shell script:
 
 `cx -l`
 
+## License
+MIT
+
 ## References
 https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html
+
 https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
