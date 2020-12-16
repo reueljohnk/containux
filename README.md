@@ -1,5 +1,7 @@
 # CONTAINUX
 
+ > tip: Go to https://debayanlab.github.io/containux/ to view the github page.
+
 ## Description
 
 Containux is an Arch-based linux distribution built with user control and privacy in mind. In today's world users are constantly downloading and installing numerous applications from various sources on the internet. More often than not, the user does not verify the source or "trustedness" of the application before running it on their computer.
@@ -17,12 +19,12 @@ Containerization technologies such as docker allow applications to run independe
 The reason containerization is important for the purpose of this project however is privacy and security. When applications run in their own containers, their scope of access is restricted to that "bubble". In doing so, it reduces the "surface of attack" in the case of any malicious behaviour by the appplication. Containux attempts to use this containment model of security where the user can choose to contain and restrict an application's behaviour.
 
 ## Linux Security Module (LSM)
-  The linux security module is a framework created by the developers of the linux kernel which can be used by third party developers to create extensions which can take advantage of some features of the kernel. The way this works is that the LSM creates "hooks"  third party applications can use to  "hook into" different parts of the system. Referring to the paper by Greg K.H et. al, "LSM allows modules to mediate access to kernel objectsby placing hooksin the kernel code just ahead of the access ... Just before the kernel would have  accessed  an  internal  object, a hook makes a call to a function that the LSM module must provide.  The module can either let the access occur, or deny access,forcing an error code return"
+  The linux security module is a framework created by the developers of the linux kernel which can be used by third party developers to create extensions which can take advantage of some features of the kernel. The way this works is that the LSM creates "hooks"  third party applications can use to  "hook into" different parts of the system. Referring to the paper by Greg K.H et. al, "LSM allows modules to mediate access to kernel objectsby placing hooks in the kernel code just ahead of the access ... Just before the kernel would have  accessed  an  internal  object, a hook makes a call to a function that the LSM module must provide.  The module can either let the access occur, or deny access,forcing an error code return"
   
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook.png)
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook2.png)
 
-One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system.One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.
+One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system. One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.
 
 ![](https://github.com/debayanLab/containux/blob/main/assets/lsmnumbers.png) 
 
@@ -31,7 +33,7 @@ One of the most popular and primary uses of the LSM is to create MAC extensions.
 
 ### App Armor
 
-AppArmor is a MAC tool that takes advantage of the LSM. It uses a method that involves setting profiles which in turn dictate the scope of various applications.  Programs that are not confined with Apparmor typically run in a DAC mode. Therefore, if any apparmor rules are applied, it augments the traditional DAC to first test the said application against existing DAC policies only after which it is tested with the AppArmor rules. The standout feature of apparmor however, is that it maintains rules on a per application basis rather than on a per user basis. This makes it tougher for malicious applications to gain restriced access to files by means of a privilege escalation attack.
+AppArmor is a MAC tool that takes advantage of the LSM. It uses a method that involves setting profiles which in turn dictate the scope of various applications.  Programs that are not confined with Apparmor typically run in a DAC (Direct Access Control) mode. Therefore, if any apparmor rules are applied, it augments the traditional DAC to first test the said application against existing DAC policies only after which it is tested with the AppArmor rules. The standout feature of apparmor however, is that it maintains rules on a per application basis rather than on a per user basis. This makes it tougher for malicious applications to gain restriced access to files by means of a privilege escalation attack.
 
 ### Firejail
 
@@ -62,7 +64,6 @@ Archlinux by default comes with a very minimal ISO. It is not a typical linux sy
 
 To contain the different applications and create security policies, the CX tool achieves that. It interfaces with firejail and apparmor to create "containers" for given applications. Everytime a container is created with CX, it sets up an apparmor and firejail profile for the given application. By default, everything is in an "unrestricted mode" where the application behaves just as it did before it was being contained. Once a rule is created however, cx relays this to both firejail and apparmor after which the profiles are regenerated. The application is now run by default with the `firejail` prefix in the background to ensure that all profiles are loaded and in effect.
 ![](https://github.com/debayanLab/containux/blob/main/assets/architecture.png)
-
 
 ## Installation
 
