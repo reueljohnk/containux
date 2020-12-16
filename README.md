@@ -22,8 +22,10 @@ The reason containerization is important for the purpose of this project however
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook.png)
  ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook2.png)
 
-One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system.One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.	
+One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system.One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.
+
 ![](https://github.com/debayanLab/containux/blob/main/assets/lsmnumbers.png) 
+
 ![](https://github.com/debayanLab/containux/blob/main/assets/graph.png) 
 ## Tools used
 
@@ -157,7 +159,18 @@ To create a new container for a shell script:
 MIT
 
 ## References
+
+Linux Security Modules: General Security Support for the Linux Kernel
+Chris Wright and Crispin Cowan, WireX Communications, Inc.;James Morris, Intercode Pty Ltd;  Stephen Smalley, NAI Labs, Network Associates, Inc.; Greg Kroah-Hartman, IBM Linux Technology Center(https://www.usenix.org/legacy/event/sec02/full_papers/wright/wright.pdf)
+
 https://www.kernel.org/doc/html/latest/admin-guide/LSM/index.html
 
 https://gitlab.com/apparmor/apparmor/-/wikis/Documentation
 
+https://wiki.archlinux.org/index.php/Firejail
+
+https://firejail.wordpress.com/documentation-2/ (yes this is their official page :3)
+
+https://wiki.archlinux.org/index.php/Installation_guide
+
+https://wiki.archlinux.org/index.php/AppArmor
