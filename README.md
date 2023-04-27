@@ -1,7 +1,5 @@
 # CONTAINUX
 
- > tip: Go to https://debayanlab.github.io/containux/ to view the github page,however images might not display depending on the permissions of the repo.
-
 ## Description
 
 Containux is an Arch-based linux distribution built with user control and privacy in mind. In today's world users are constantly downloading and installing numerous applications from various sources on the internet. More often than not, the user does not verify the source or "trustedness" of the application before running it on their computer.
@@ -21,14 +19,14 @@ The reason containerization is important for the purpose of this project however
 ## Linux Security Module (LSM)
   The linux security module is a framework created by the developers of the linux kernel which can be used by third party developers to create extensions which can take advantage of some features of the kernel. The way this works is that the LSM creates "hooks"  third party applications can use to  "hook into" different parts of the system. Referring to the paper by Greg K.H et. al, "LSM allows modules to mediate access to kernel objectsby placing hooks in the kernel code just ahead of the access ... Just before the kernel would have  accessed  an  internal  object, a hook makes a call to a function that the LSM module must provide.  The module can either let the access occur, or deny access,forcing an error code return"
   
- ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook.png)
- ![](https://github.com/debayanLab/containux/blob/main/assets/lsmhook2.png)
+ ![](https://github.com/reueljohnk/containux/blob/main/assets/lsmhook.png)
+ ![](https://github.com/reueljohnk/containux/blob/main/assets/lsmhook2.png)
 
 One of the most popular and primary uses of the LSM is to create MAC extensions. MAC stands for Mandatory Access Control, an access handling policy which can dictate access to various parts of the filesystem and hardware devices. In a MAC system, there is one authority which determines the permissions and access policies for all of the aforementioned devices. Therefore, in the case of containux, it is the user that becomes the sole authority in determining the scope of applications in his/her system. One of the main advantages of the LSM was in fact the performance benefit. Since it is built into the kernel itself, the process of granting and denying access is significantly reduced. This framework is essential to the working of Containux as it relies on the MAC protocol combined with the LSM to contain the behaviour of various applications running on the system.
 
-![](https://github.com/debayanLab/containux/blob/main/assets/lsmnumbers.png) 
+![](https://github.com/reueljohnk/containux/blob/main/assets/lsmnumbers.png) 
 
-![](https://github.com/debayanLab/containux/blob/main/assets/graph.png) 
+![](https://github.com/reueljohnk/containux/blob/main/assets/graph.png) 
 ## Tools used
 
 ### App Armor
@@ -63,7 +61,7 @@ Archlinux by default comes with a very minimal ISO. It is not a typical linux sy
 ## CX tool
 
 To contain the different applications and create security policies, the CX tool achieves that. It interfaces with firejail and apparmor to create "containers" for given applications. Everytime a container is created with CX, it sets up an apparmor and firejail profile for the given application. By default, everything is in an "unrestricted mode" where the application behaves just as it did before it was being contained. Once a rule is created however, cx relays this to both firejail and apparmor after which the profiles are regenerated. The application is now run by default with the `firejail` prefix in the background to ensure that all profiles are loaded and in effect.
-![](https://github.com/debayanLab/containux/blob/main/assets/architecture.png)
+![](https://github.com/reueljohnk/containux/blob/main/assets/architecture.png)
 
 ## Installation
 
@@ -101,7 +99,7 @@ Once Arch Linux has booted you should get an installation tty.
 
 Clone the git repo: 
 
-`https://github.com/debayanLab/containux`
+`https://github.com/reueljohnk/containux/`
 
 give executable permissions to the directory:
 
